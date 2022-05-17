@@ -114,75 +114,106 @@ struct ContentView: View {
     //}
     
     // MARK: - App completo usando componentizacao
-    @State var notes: [String] = []
-    @State var input: String = ""
-    @FocusState var textFieldEnabled: Bool
+    //@State var notes: [String] = []
+    //@State var input: String = ""
+    //@FocusState var textFieldEnabled: Bool
+    //
+    //var body: some View {
+    //    VStack(alignment: .trailing, spacing: 0) {
+    //        notesList()
+    //        inputView()
+    //    }
+    //}
+    //
+    //// Notes List
+    //func notesList() -> some View {
+    //    ScrollView {
+    //        VStack(alignment: .trailing) {
+    //            ForEach(notes, id: \.self) { note in
+    //                HStack {
+    //                    Text(note)
+    //                        .padding()
+    //                        .foregroundColor(.white)
+    //                        .background(.blue.opacity(0.75))
+    //                        .cornerRadius(10)
+    //                }
+    //                .padding(.horizontal)
+    //            }
+    //        }
+    //    }
+    //}
+    //
+    //
+    //// Input View
+    //func inputView() -> some View {
+    //    HStack(spacing: 20) { 
+    //        customTextField()
+    //        saveButton()
+    //    }
+    //    .padding()
+    //    .background(Color.blue.opacity(0.1))
+    //}
+    //
+    //func customTextField() -> some View {
+    //    VStack {
+    //        TextField(
+    //            "Insira uma anotação curta", 
+    //            text: $input
+    //        )
+    //        .focused($textFieldEnabled)
+    //        
+    //        Divider()
+    //            .frame(height: 1.5)
+    //            .background(Color.blue)
+    //    }
+    //}
+    //
+    //func saveButton() -> some View {
+    //    Button(action: save) { 
+    //        Image(systemName: "doc.fill.badge.plus")
+    //            .padding()
+    //            .foregroundColor(.white)
+    //            .background(.blue)
+    //            .clipShape(Circle())
+    //    }
+    //}
+    //
+    //func save() {
+    //    if !input.isEmpty {
+    //        notes.append(input) 
+    //        input = ""
+    //        textFieldEnabled = false
+    //    }
+    //}
+    
+    // MARK: - App completo usando outras Views como Componentes
+    //@State var notes: [String] = []
+    //@State var input: String = ""
+    //
+    //var body: some View {
+    //    VStack(alignment: .trailing, spacing: 0) {
+    //        NotesListView(notes: $notes)
+    //        InputView(input: $input, saveHandler: save)
+    //    }
+    //}
+    //
+    //func save() {
+    //    if !input.isEmpty {
+    //        notes.append(input) 
+    //        input = ""
+    //    }
+    //}
+    
+    // MARK: - Usando ViewModel 
+    @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
-            notesList()
-            inputView()
-        }
-    }
-    
-    // Notes List
-    func notesList() -> some View {
-        ScrollView {
-            VStack(alignment: .trailing) {
-                ForEach(notes, id: \.self) { note in
-                    HStack {
-                        Text(note)
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(.blue.opacity(0.75))
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal)
-                }
-            }
-        }
-    }
-    
-    
-    // Input View
-    func inputView() -> some View {
-        HStack(spacing: 20) { 
-            customTextField()
-            saveButton()
-        }
-        .padding()
-        .background(Color.blue.opacity(0.1))
-    }
-    
-    func customTextField() -> some View {
-        VStack {
-            TextField(
-                "Insira uma anotação curta", 
-                text: $input
+            NotesListView(notes: $viewModel.notes)
+            InputView(
+                input: $viewModel.input, 
+                saveHandler: viewModel.save
             )
-            .focused($textFieldEnabled)
-            
-            Divider()
-                .frame(height: 1.5)
-                .background(Color.blue)
-        }
-    }
-    
-    func saveButton() -> some View {
-        Button(action: save) { 
-            Image(systemName: "doc.fill.badge.plus")
-                .padding()
-                .foregroundColor(.white)
-                .background(.blue)
-                .clipShape(Circle())
-        }
-    }
-    
-    func save() {
-        if !input.isEmpty {
-            notes.append(input) 
-            input = ""
-            textFieldEnabled = false
         }
     }
     
